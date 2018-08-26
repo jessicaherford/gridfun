@@ -7,7 +7,7 @@ namespace grid_fun.Controllers
     [Route("api/[controller]")]
     public class TriangleController : ControllerBase
     {
-        // GET: api/triangles
+        // GET: api/triangle
         [HttpGet]
         public object Get()
         {
@@ -15,14 +15,14 @@ namespace grid_fun.Controllers
         }
 
 
-        // Get: api/triangles/byId?=A1
+        // Get: api/triangle/byId?=A1
         [HttpGet("byId")]
         public object Get(string id)
         {
             return TriangleProvider.GetTriangleById(id);
         }
     
-        // Get: api/triangles/byCoords?coord1=0&coord2=0&coord3=0&coord4=10&coord5=0&coord6=10
+        // Get: api/triangle/byCoords?coord1=0&coord2=0&coord3=0&coord4=10&coord5=0&coord6=10
         [HttpGet("byCoords")]
         public object Get([FromQuery] int coord1, int coord2, int coord3, int coord4, int coord5, int coord6)
         {
