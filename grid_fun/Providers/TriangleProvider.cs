@@ -17,82 +17,54 @@ namespace grid_fun.Providers
             F
         }
 
+        private static int height = 10;
+        private static int width = 10;
+
         public static Dictionary<string, List<int[]>> TriangleDict = new Dictionary<string, List<int[]>>();
 
         static TriangleProvider()
         {
-            if(TriangleDict.Count.Equals(0)){
-                int[] columns = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-                int x = 0;
-                int y = 0;
-                int columnNumber = 1;
+                int[] columns = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
-                //Create triangle grid
-
-                foreach( Rows row in Enum.GetValues(typeof(Rows)))
+            //Create triangle grid
+            foreach (Rows row in Enum.GetValues(typeof(Rows)))
+            {
+                int rowNumber = (int)row;
+                for (int col = 0; col < columns.Length; col++)
                 {
-                    int rowNumber = (int)row;
-                    foreach(int column in columns)
-                    {
-                        if(column == 0)
-                        {
-                            Triangle startingTriangle = new Triangle
-                            {
-                                Id = row + columnNumber.ToString(),
-                                Coord1 = new int[] { x, y },
-                                Coord2 = new int[] { x, y += 10 },
-                                Coord3 = new int[] { x += 10, y }
-                            };
+                    var key = row + (columns[col] + 1).ToString();
+                    var coordinates = new List<int[]>();
 
-                            AddTriangleToDictionary(startingTriangle);
-                            columnNumber++;
-                        }
-                        else if (column % 2 != 0)
-                        {
-                            Triangle oddTriangleColumn = new Triangle
-                            {
-                                Id = row + columnNumber.ToString(),
-                                Coord1 = new int[] { x -= 10, y -= 10 },
-                                Coord2 = new int[] { x += 10, y },
-                                Coord3 = new int[] { x, y += 10 }
-                            };
+                    var xCoordList = GetXCoordValues(col, rowNumber);
+                    var yCoordList = GetYCoordValues(col, rowNumber);
 
-                            AddTriangleToDictionary(oddTriangleColumn);
-                            columnNumber++;
-                        }
-                        else if (column % 2 == 0)
-                        {
-                            Triangle evenTriangleColumn = new Triangle
-                            {
-                                Id = row + columnNumber.ToString(),
-                                Coord1 = new int[] { x, y -= 10 },
-                                Coord2 = new int[] { x, y += 10 },
-                                Coord3 = new int[] { x += 10, y }
-                            };
-
-                            AddTriangleToDictionary(evenTriangleColumn);
-                            columnNumber++;
-                        }
+                    // making 3 coords for each Triangle
+                    for (int i = 0; i < 3; i++){
+                        Coordinate coordinate = new Coordinate { X = xCoordList[i], Y = yCoordList[i] };
+                        int[] coord = { coordinate.X, coordinate.Y };
+                        coordinates.Add(coord);
                     }
-
-                    x = 0;
-                    y = 0 + (rowNumber += 1) * 10;
-                    columnNumber = 1;
+                    TriangleDict.Add(key, coordinates);
                 }
             }
         }
 
-        private static object AddTriangleToDictionary(Triangle newTriangle)
+        public static List<int> GetXCoordValues(int col, int row)
         {
-            //Adding triangle items to Dictionary
-            TriangleDict.Add(newTriangle.Id, new List<int[]>()
+            if(col%2 == 0)
             {
-                new int[] {newTriangle.Coord1[0], newTriangle.Coord1[1]},
-                new int[] {newTriangle.Coord2[0], newTriangle.Coord2[1]},
-                new int[] {newTriangle.Coord3[0], newTriangle.Coord3[1]}
-            });
+                return new List<int> { col * width / 2, col * width / 2, col * width / 2 + width };
+            }
+            return new List<int> { (col - 1) * width / 2, (col - 1) * width / 2 + width, (col - 1) * width / 2 + width};
+        }
 
-            return JsonConvert.SerializeObject(TriangleDict);
+        public static List<int> GetYCoordValues(int col, int row)
+        {
+            if (col % 2 == 0)
+            {
+                return new List<int> { row * height, row * height + height, row * height + height };
+            }
+            return new List<int> { row * height, row * height, row * height + height };
         }
 
         public static object GetAllTriangles()
@@ -118,7 +90,7 @@ namespace grid_fun.Providers
                 var testpair2 = pair.Value[1];
                 var testcoord2 = coords[1]; 
                 var testpair3 = pair.Value[2];
-                var testcoord3 = coords[2]; 
+                var testcoord3 = coords[2];
 
                 if((testpair1[0] == testcoord1[0]) && (testpair1[1] == testcoord1[1]) && (testpair2[0] == testcoord2[0]) && (testpair2[1] == testcoord2[1]) && (testpair3[0] == testcoord3[0]) && (testpair3[1] == testcoord3[1]))
                 {

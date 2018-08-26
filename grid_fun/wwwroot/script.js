@@ -22,12 +22,11 @@
 
                                   let triangles = data;
 
-                                  for (tri in triangles) {
-
+                                  for (tri in triangles) 
+                                  {
                                          var trinode = `<div>${tri + " " + triangles[tri]}</div>`;
 
                                          document.getElementById("triangles").innerHTML += trinode;
-
                                   }
 
                            })
@@ -118,8 +117,6 @@
 
                            triCoord6;
 
-                     console.log(url);
-
                      fetch(url) // Call the fetch function passing the url of the API as a parameter
 
                            .then((resp) => resp.json())
@@ -133,9 +130,6 @@
                                   document.getElementById("triangles").innerHTML += trinode;
 
                            })
-
-                           //.catch(error => console.warn(error))
-
                            .catch(error => document.getElementById("triangles").innerHTML += "Triangle Not Found Invalid Input");
 
               });
