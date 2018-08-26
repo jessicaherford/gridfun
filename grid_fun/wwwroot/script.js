@@ -64,7 +64,7 @@
 
                            })
 
-                           .catch(error => document.getElementById("triangles").innerHTML += "Triangle Not Found Invalid");
+                           .catch(error => document.getElementById("triangles").innerHTML += "Triangle Not Found Invalid Input");
 
               });
 
@@ -136,7 +136,7 @@
 
                            //.catch(error => console.warn(error))
 
-                           .catch(error => document.getElementById("triangles").innerHTML += "Triangle Not Found Invalid");
+                           .catch(error => document.getElementById("triangles").innerHTML += "Triangle Not Found Invalid Input");
 
               });
 
